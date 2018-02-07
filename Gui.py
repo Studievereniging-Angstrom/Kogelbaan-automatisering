@@ -30,7 +30,7 @@ app2 = App(title = 'Second GUI', width=300 , height=200, layout='grid')
 List_1 = Combo(app2, options=['List','First_item'], grid = [1,0],align='left')
 List_1_text = Text(app2, text="List:", grid=[0,0], align="left")
 Checkbox_1 = CheckBox(app2, text="Checkmark", grid=[0,1], align="left")
-ButtonGroup_1 = ButtonGroup(app2,options=[['Front', 'Front'],['Middle', 'Middle'], ['Back', 'Back']],selected="M",                                       horizontal=True, grid=[1,3], align="left" )
+ButtonGroup_1 = ButtonGroup(app2,options=[['Front', 'Front'],['Middle', 'Middle'], ['Back', 'Back']],selected="M",horizontal=True, grid=[1,3], align="left" )
 row_choice_text = Text(app2, text="Which row", grid=[0,3], align="left")
 show_choices = PushButton(app2, command=choice, text="Show choices", grid=[0,4], align='left')
 
