@@ -1,3 +1,5 @@
+import numpy as np
+
 __author__ = "Jelle Westra"
 
 
@@ -127,15 +129,7 @@ def peakfinder(y, min_peak_height=None, min_peak_distance=None,
 """  - Example -  """
 
 if (__name__ == "__main__"):
-    
-    #Importing numpy for generating random data...
-    try:
-        import numpy as np
-    except:
-        print("Example is only available if numpy is installed.")
-        exit()
-
-        
+            
     y = np.sin(2*np.pi*5*np.linspace(0, 1, 200)) + np.random.randn(200)/5 +35
     x = np.linspace(0,1,200)
 
