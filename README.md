@@ -13,4 +13,4 @@ Op dit moment kan er gebruik worden gemaakt van twee verschillende AD converters
 - ADC Pi Plus
 
 Voor elk van deze converters staat er een Python script in de repository. 
-Voor het verwerken en intepreteren van deze data wordt het zogenaamde 'Functie' bestand gebruikt
+Voor het verwerken en intepreteren van deze data wordt het zogenaamde 'Functie' bestand gebruikt.
