@@ -56,7 +56,7 @@ TempList3 = []
 def animate(i):
     global  tijd_sList##,xArray, yArray
     global TempList,TempList1, TempList2,TempList3
-    liveplot.plot(xArray, yArray)
+    liveplot.plot(xArray, yArray,color='r')
 
 ##    data1 = mpatches.Patch(color = 'r', label='Kanaal 1')
 ##    liveplot.plot(tijd_sList, TempList, color='r')
@@ -147,7 +147,7 @@ class Mainframe(tk.Frame):
     def Save(self):
         appendFile = open('adclogger.csv','a')
         for item in TempList:
-            appendFile.write(' %s,' % item)
+            appendFile.write('%s,' % item)
         appendFile.close()
         
 class App(tk.Tk):
