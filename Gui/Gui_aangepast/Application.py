@@ -7,6 +7,7 @@ from matplotlib import style
 import matplotlib.patches as mpatches
 
 import tkinter as tk
+from tkinter import *
 from tkinter import ttk
 
 import pandas as pd
@@ -19,9 +20,8 @@ update_interval = 1000 #in milliseconds
 LARGE_FONT = ('Verdana', 12)
 style.use(['ggplot'])
 
-f = Figure(figsize=(5,5), dpi=100)
+f = Figure(figsize=(9,7), dpi=100)
 liveplot = f.add_subplot(111)
-
 
 global xArray,yArray,length
 length = 1000
@@ -51,8 +51,6 @@ TempList3 = []
 ##adc.set_bit_rate(rate)
 ##adc.set_conversion_mode(1) #conversie mode
 
-
-
 def animate(i):
     global  tijd_sList##,xArray, yArray
     global TempList,TempList1, TempList2,TempList3
@@ -67,84 +65,135 @@ def animate(i):
 ##    data4 = mpatches.Patch(color = 'g', label='Kanaal 4')
 ##    liveplot.plot(tijd_sList, TempList3, color='g')
 ##    liveplot.legend(handles=[data1,data2,data3,data4])
+    liveplot.axes.format_coord = lambda x, y: ""
     liveplot.set_xlabel('tijd [s]')
     liveplot.set_ylabel('Voltage [V]')
     
 class Mainframe(tk.Frame):
     #contains the widgets
     def __init__(self,master,*args,**kwargs):
-        tk.Frame.__init__(self,master,*args,**kwargs)
-    # *args packs positional arguments into tuple args
-    # **kwargs packs keyword arguments into dict kwargs
 
-        'Widgets worden gedefinieerd'
-        'Labels' 
         
+        windowframe = tk.Frame.__init__(self,master,*args,**kwargs) #creating the mainframe
 
-##        'Tempaturen label'  
-##        self.Temperature = tk.IntVar()
-##        self.Temperature1 = tk.IntVar()
-##        self.Temperature2 = tk.IntVar()
-##        self.Temperature3 = tk.IntVar()
-##        label1 = ttk.Label(self, text='Channel 1 :',font=LARGE_FONT).pack(pady=10, padx=10,side='left')
-##        label2 = ttk.Label(self, textvariable = self.Temperature,font=LARGE_FONT).pack(pady=10, padx=10,side='left')
-##        label1 = ttk.Label(self, text='Channel 2 :',font=LARGE_FONT).pack(pady=10, padx=10,side='left')
-##        label3 = ttk.Label(self, textvariable = self.Temperature1,font=LARGE_FONT).pack(pady=10, padx=10,side='left')        
-##        label4 = ttk.Label(self, text='Channel 3 :',font=LARGE_FONT).pack(pady=10, padx=10,side='left')
-##        label6 = ttk.Label(self, textvariable = self.Temperature2,font=LARGE_FONT).pack(pady=10, padx=10,side='left')        
-##        label5 = ttk.Label(self, text='Channel 4 :',font=LARGE_FONT).pack(pady=10, padx=10,side='left')
-##        label7 = ttk.Label(self, textvariable = self.Temperature3,font=LARGE_FONT).pack(pady=10, padx=10,side='left')        
-        self.TimerInterval = 1000 # ms
+        #-------
         
+        #frame for the buttons and labels (left)
+        butlabframe = Frame(windowframe)
+        butlabframe.pack(side='left')
         
-        'Buttons' 
-        button1 = ttk.Button(self,text='Applicatie sluiten',command=quit).pack(side='left')
-        button3 = ttk.Button(self,text='Test',command=self.test).pack(side='left')
-        button4 = ttk.Button(self,text='Test_sinus',command=self.array_writer).pack(side='left')
-##        button4 = ttk.Button(self,text='ADC read',command=self.Read).pack(side='left')
-        button4 = ttk.Button(self,text='Save data',command=self.Save).pack(side='left')
-        'Live plot' 
+        #frame fot the live plot (right)
+        plotframe = Frame(windowframe)
+        plotframe.pack(side='right')
+
+        #-------
+
+        #defining plot
         live_plot = FigureCanvasTkAgg(f, self)
-        live_plot.get_tk_widget().pack(side='left', fill='both')
-        'Toolbar' 
-        toolbar = NavigationToolbar2TkAgg(live_plot, self)
+        live_plot.get_tk_widget().pack(side='right')      
+
+        toolbar = NavigationToolbar2TkAgg(live_plot, butlabframe)
+        
         toolbar.update()
-        live_plot._tkcanvas.pack(side='left',fill='both')
+        
+        live_plot._tkcanvas.pack(side='right')
         live_plot.show()
 
+        #defining buttons
+        butt_w = 10
+        bg_color = 'white'
+        fg_color = 'black'
+
+        #defining labels
+        self.Temperature = tk.IntVar()
+        self.Temperature1 = tk.IntVar()
+        self.Temperature2 = tk.IntVar()
+        self.Temperature3 = tk.IntVar()
+        
+        
+        but_test = Button(butlabframe,text='TEST',command=self.test,
+                          width=butt_w, font=LARGE_FONT,
+                          bg=bg_color, fg=fg_color)
+        but_test.pack(side='top', fill=X)
+        self.hovering(but_test, bg_color, fg_color)
+
+        but_read = Button(butlabframe,text='Read',command=self.read,
+                          width=butt_w, font=LARGE_FONT,
+                          bg=bg_color, fg=fg_color)
+        but_read.pack(side='top', fill=X)
+        self.hovering(but_read, bg_color, fg_color)
+
+        but_sine = Button(butlabframe,text='SINE',command=self.array_writer,
+                          width=butt_w, font=LARGE_FONT,
+                          bg=bg_color, fg=fg_color)
+        but_sine.pack(side='top', fill=X)
+        self.hovering(but_sine, bg_color, fg_color)
+
+        but_save_data = Button(butlabframe,text='SAVE DATA',command=self.save,
+                          width=butt_w, font=LARGE_FONT,
+                          bg=bg_color, fg=fg_color)
+        but_save_data.pack(side='top', fill=X)
+        self.hovering(but_save_data, bg_color, fg_color)
+        
+        but_exit = Button(butlabframe,text='EXIT',command=quit,
+                          width=butt_w, font=LARGE_FONT,
+                          bg=bg_color, fg=fg_color)
+        but_exit.pack(side='top', fill=X)
+        self.hovering(but_exit, bg_color, fg_color)
+        
+        labC1A = Label(butlabframe, text='Kanaal 1 : [V]',font=LARGE_FONT).pack(pady=10, padx=10,side='top')
+        labC1B = Label(butlabframe, textvariable = self.Temperature, font=LARGE_FONT).pack(pady=10, padx=10,side='top')
+
+        labC2A = Label(butlabframe, text='Kanaal 2 : [V]',font=LARGE_FONT).pack(pady=10, padx=10,side='top')
+        labC2B = Label(butlabframe, textvariable = (self.Temperature1), font=LARGE_FONT).pack(pady=10, padx=10,side='top')        
+
+        labC3A = Label(butlabframe, text='Kanaal 3 : [V]',font=LARGE_FONT).pack(pady=10, padx=10,side='top')
+        labC3B = Label(butlabframe, textvariable = self.Temperature2, font=LARGE_FONT).pack(pady=10, padx=10,side='top')        
+
+        labC4A = Label(butlabframe, text='Kanaal 4 : [V]',font=LARGE_FONT).pack(pady=10, padx=10,side='top')
+        labC4B = Label(butlabframe, textvariable = self.Temperature3, font=LARGE_FONT).pack(pady=10, padx=10,side='top')        
+        self.TimerInterval = 1000 # ms
+    
+
+    def hovering(self, button, bg_color, fg_color):
+        button.bind("<Enter>", lambda event, h=button: h.configure(bg="white",fg="black"))
+        button.bind("<Leave>", lambda event, h=button: h.configure(bg=bg_color, fg=fg_color))      
 
     def test(self):
         print('test')
-        
-##    def Read(self):
-##        global Temp,Temp1, Temp2, Temp3,ref_time,tijd_s
-##        self.Temperature.set(Temp)
-##        self.Temperature1.set(Temp1)
-##        self.Temperature2.set(Temp2)
-##        self.Temperature3.set(Temp3)
-##        Temp = round(adc.read_voltage(1),1)
-##        Temp1 = round(adc.read_voltage(2),1)
-##        Temp2 = round(adc.read_voltage(3),1)
-##        Temp3 = round(adc.read_voltage(4),1)
-##
-##        tijd_s += 1 #Elke rondgang tijd + 1
-##        tijd_sList.append(tijd_s)
-##        TempList.append(Temp)
-##        TempList1.append(Temp1)
-##        TempList2.append(Temp2)
-##        TempList3.append(Temp3) 
-##        self.after(self.TimerInterval,self.Read) # and repeat 
 
+    def nothing(self):
+        pass
         
+    def read(self):
+        global Temp,Temp1, Temp2, Temp3, ref_time, tijd_s
+        self.Temperature.set(Temp)
+        self.Temperature1.set(Temp1)
+        self.Temperature2.set(Temp2)
+        self.Temperature3.set(Temp3)
+        Temp = round(adc.read_voltage(1),8)
+        Temp1 = round(adc.read_voltage(2),7)
+        Temp2 = round(adc.read_voltage(3),1)
+        Temp3 = round(adc.read_voltage(4),1)
+
+        tijd_s += 1 #Elke rondgang tijd + 1
+        tijd_sList.append(tijd_s)
+        TempList.append(Temp)
+        TempList1.append(Temp1)
+        TempList2.append(Temp2)
+        TempList3.append(Temp3) 
+        self.after(self.TimerInterval,self.read) # and repeat
+
     def array_writer(self):
-        for i in range(1000):
+        for i in range(250):
             xValue = i
-            yValue = int(100*np.sin(i/100))
+            yValue = int(100*np.sin(i/10))
             xArray[i] = xValue
             yArray[i] = yValue
+            ##t.sleep(1)
             print(str(int(xValue))+str(',')+str(int(yValue))+str('\n'))
             
-    def Save(self):
+    def save(self):
         appendFile = open('adclogger.csv','a')
         for item in TempList:
             appendFile.write('%s,' % item)
@@ -153,12 +202,8 @@ class Mainframe(tk.Frame):
 class App(tk.Tk):
     def __init__(self): #args numbers of variables en kwargs: keyboard arguments, passing through dictionaries
         tk.Tk.__init__(self)
-
-        #set title 
-        tk.Tk.wm_title(self, "Live plot")
-        #definieer de grote van de app  
-        self.geometry('2000x500')
-        #maak en pack StartPage
+        tk.Tk.wm_title(self, "Live plot of Voltage over Time (By Paulus & Luc)")
+        self.geometry('1024x640')
         Mainframe(self).pack()
         
 app = App()
