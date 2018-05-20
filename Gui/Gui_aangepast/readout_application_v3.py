@@ -185,8 +185,8 @@ class Mainframe(tk.Frame):
             yValue = int(100*np.sin(i/10))
             xArray[i] = xValue
             yArray[i] = yValue
-            t.sleep(1)
-            ##print(str(int(xValue))+str(',')+str(int(yValue))+str('\n'))
+            ##t.sleep(1)
+            print(str(int(xValue))+str(',')+str(int(yValue))+str('\n'))
             
     def save(self):
         appendFile = open('adclogger.csv','a')
